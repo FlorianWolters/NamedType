@@ -42,7 +42,7 @@ matrix:
           - ubuntu-toolchain-r-test
           - llvm-toolchain-trusty-7
         packages:
-          - clang-7
+          - clang-7.0
   - name: "Clang 7, Release"
     env:
       - C_COMPILER=clang-7.0
