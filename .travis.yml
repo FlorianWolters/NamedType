@@ -44,11 +44,11 @@ install:
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       # Download and install CMake.
       mkdir -p ~/cmake-${CMAKE_VERSION}-x64
-      curl --silent --remote-name --remote-header-name https://cmake.org/files/v${CMAKE_VERSION::-2}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh
-      bash cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix="${HOME}/cmake-${CMAKE_VERSION}-x64"
+      wget --quiet https://cmake.org/files/v${CMAKE_VERSION::-2}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh
+      bash cmake-${CMAKE_VERSION}-Linux-x86_64.sh --prefix="${HOME}/cmake-${CMAKE_VERSION}-x64" --exclude-subdir --skip-license
 
       # Download and install Ninja.
-      curl --silent --remote-name --remote-header-name https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/ninja-linux.zip
+      wget --quiet https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/ninja-linux.zip
       unzip ninja-linux.zip -d ~/ninja-${NINJA_VERSION}
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew upgrade cmake
