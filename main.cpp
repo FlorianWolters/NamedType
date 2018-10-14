@@ -1,15 +1,19 @@
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
-#include "catch.hpp"
-
+// Standard Library
 #include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <unordered_map>
+
+// Catch
+#include "catch.hpp"
+
+// NamedType
 #include "named_type.hpp"
 
 // Usage examples
+namespace {
 
 template<typename T>
 decltype(auto) tee(T&& value)
@@ -39,6 +43,8 @@ private:
     Meter width_;
     Meter height_;
 };
+
+}  // namespace
 
 TEST_CASE("Basic usage")
 {

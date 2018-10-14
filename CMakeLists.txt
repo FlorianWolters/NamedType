@@ -49,6 +49,10 @@ if(BUILD_TESTING)
     PRIVATE
     cxx_decltype_auto
     )
+  target_compile_definitions(${PROJECT_NAME}_test
+    PRIVATE
+    CATCH_CONFIG_MAIN
+    )
   set_property(TARGET ${PROJECT_NAME}_test
     PROPERTY
       FOLDER "Tests"
