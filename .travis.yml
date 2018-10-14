@@ -40,14 +40,14 @@ install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
       # Download and install CMake v3.10.3.
-      mkdir -p ~/cmake-install
-      curl --silent https://cmake.org/files/v3.10/cmake-3.10.3-Linux-x86_64.sh --output cmake-install.sh
-      bash cmake-install.sh --skip-license --prefix="${HOME}/cmake"
+      CMAKE_VERSION=3.10.3
+      mkdir -p ~/cmake-${CMAKE_VERSION}-x64
+      curl --silent https://cmake.org/files/v${CMAKE_VERSION::-2}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh
+      bash cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix="${HOME}/cmake-${CMAKE_VERSION}-x64"
+      export PATH=~/cmake-${CMAKE_VERSION}-x64/bin:$PATH
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew upgrade cmake
     fi
-
-    export PATH=~/cmake/bin:$PATH
 
 script:
   # Configure & Generate the project.
