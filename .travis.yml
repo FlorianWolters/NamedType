@@ -1,43 +1,54 @@
 language: cpp
-dist: trusty
 sudo: false
 
-# TODO(2018-10-14 by wolters) Add support for OS-X and additional compiler
-# versions.
-matrix:
-  # GNU Compiler Collection (GCC) 7
-  include:
-  - os: linux
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-        packages:
-          - g++-7
-    env:
-      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-  # Clang 7
-  - os: linux
-    addons:
-      apt:
-        sources:
-          - ubuntu-toolchain-r-test
-          - llvm-toolchain-trusty-6.0
-        packages:
-          - clang-7.0
-    env:
-      - MATRIX_EVAL="CC=clang-7.0 && CXX=clang++-7.0"
-
-before_install:
-  - eval "${MATRIX_EVAL}"
+# Use Linux operating system (OS) unless specified otherwise.
+os: linux
+dist: trusty
 
 env:
   global:
     - CMAKE_VERSION=3.10.3
     - NINJA_VERSION=1.8.2
-  matrix:
-    - BUILD_TYPE=Debug
-    - BUILD_TYPE=Release
+
+# TODO(2018-10-14 by wolters) Add support for Mac OS X and additional compiler
+# versions.
+matrix:
+  include:
+  - name: "GCC 7, Debug"
+    env:
+      - C_COMPILER=gcc-7
+      - CXX_COMPILER=g++-7
+      - BUILD_TYPE=Debug
+    addons: &gcc7
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-7
+  - name: "GCC 7, Release"
+    env:
+      - C_COMPILER=gcc-7
+      - CXX_COMPILER=g++-7
+      - BUILD_TYPE=Release
+    addons: *gcc7
+  - name: "Clang 7, Debug"
+    env:
+      - C_COMPILER=clang-7.0
+      - CXX_COMPILER=clang++-7.0
+      - BUILD_TYPE=Debug
+    addons: &clang7
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-trusty-6.0
+        packages:
+          - clang-7
+  - name: "Clang 7, Release"
+    env:
+      - C_COMPILER=clang-7.0
+      - CXX_COMPILER=clang++-7.0
+      - BUILD_TYPE=Release
+    addons: *clang7
 
 install:
   - |
@@ -64,7 +75,7 @@ script:
   # Configure & Generate the project.
   # TODO(2018-10-14 by wolters) Currently the undocumented CMake options -H and
   # -B are used. This can be changed with the coming CMake release v3.11.
-  - cmake -G "Ninja" -DCMAKE_BUILD_TYPE:STRING="${BUILD_TYPE}" -H. -B_build
+  - cmake -G "Ninja" -DCMAKE_CXX_COMPILER:STRING="${CXX_COMPILER}" -DCMAKE_C_COMPILER:STRING="${C_COMPILER}" -DCMAKE_BUILD_TYPE:STRING="${BUILD_TYPE}" -H. -B_build
   # Build the project.
   - cmake --build _build
   # Test the project.
