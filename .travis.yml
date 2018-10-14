@@ -14,7 +14,22 @@ env:
 # versions.
 matrix:
   include:
+  - name: "GCC (Travis CI default), Debug"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc
+      - CXX_COMPILER=g++
+      - BUILD_TYPE=Debug
+  include:
+  - name: "GCC (Travis CI default), Release"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc
+      - CXX_COMPILER=g++
+      - BUILD_TYPE=Release
+  include:
   - name: "GCC 7, Debug"
+    compiler: gcc
     env:
       - C_COMPILER=gcc-7
       - CXX_COMPILER=g++-7
@@ -26,16 +41,29 @@ matrix:
         packages:
           - g++-7
   - name: "GCC 7, Release"
+    compiler: gcc
     env:
       - C_COMPILER=gcc-7
       - CXX_COMPILER=g++-7
       - BUILD_TYPE=Release
     addons: *gcc7
+  - name: "Clang (Travis CI default), Debug"
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Debug
+  - name: "Clang (Travis CI default), Release"
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Release
   - name: "Clang 7, Debug"
     compiler: clang
     env:
-      - C_COMPILER=clang-7.0
-      - CXX_COMPILER=clang++-7.0
+      - C_COMPILER=/usr/local/clang-7.0.0/bin/clang
+      - CXX_COMPILER=/usr/local/clang-7.0.0/bin/clang++
       - BUILD_TYPE=Debug
     addons: &clang7
       apt:
@@ -47,8 +75,8 @@ matrix:
   - name: "Clang 7, Release"
     compiler: clang
     env:
-      - C_COMPILER=clang-7.0
-      - CXX_COMPILER=clang++-7.0
+      - C_COMPILER=/usr/local/clang-7.0.0/bin/clang
+      - CXX_COMPILER=/usr/local/clang-7.0.0/bin/clang++
       - BUILD_TYPE=Release
     addons: *clang7
 
