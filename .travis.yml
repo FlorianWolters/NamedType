@@ -32,6 +32,9 @@ before_install:
   - eval "${MATRIX_EVAL}"
 
 env:
+  global:
+    - CMAKE_VERSION=3.10.3
+    - NINJA_VERSION=1.8.2
   matrix:
     - BUILD_TYPE=Debug
     - BUILD_TYPE=Release
@@ -39,14 +42,22 @@ env:
 install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      # Download and install CMake v3.10.3.
-      CMAKE_VERSION=3.10.3
+      # Download and install CMake.
       mkdir -p ~/cmake-${CMAKE_VERSION}-x64
       curl --silent --remote-name --remote-header-name https://cmake.org/files/v${CMAKE_VERSION::-2}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh
       bash cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix="${HOME}/cmake-${CMAKE_VERSION}-x64"
-      export PATH=~/cmake-${CMAKE_VERSION}-x64/bin:$PATH
+
+      # Download and install Ninja.
+      curl --silent --remote-name --remote-header-name https://github.com/ninja-build/ninja/releases/download/v${NINJA_VERSION}/ninja-linux.zip
+      unzip ninja-linux.zip -d ~/ninja-${NINJA_VERSION}
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew upgrade cmake
+    fi
+
+before_script:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      export PATH=~/cmake-${CMAKE_VERSION}-x64/bin:~/ninja-${NINJA_VERSION}:$PATH
     fi
 
 script:
