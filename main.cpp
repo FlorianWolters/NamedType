@@ -39,7 +39,7 @@ private:
 
 TEST_CASE("Basic usage")
 {
-    Rectangle r(Width(10_meter), Height(12_meter));
+    class Rectangle r(Width(10_meter), Height(12_meter));
     REQUIRE(r.getWidth().get() == 10);
     REQUIRE(r.getHeight().get() == 12);
 }
