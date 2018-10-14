@@ -1,0 +1,65 @@
+language: cpp
+dist: trusty
+sudo: false
+
+# TODO(2018-10-14 by wolters) Add support for OS-X and additional compiler
+# versions.
+matrix:
+  # GNU Compiler Collection (GCC) 7
+  include:
+  - os: linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-7
+    env:
+      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+  # Clang 7
+  - os: linux
+    addons:
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-trusty-6.0
+        packages:
+          - clang-7.0
+    env:
+      - MATRIX_EVAL="CC=clang-7.0 && CXX=clang++-7.0"
+
+before_install:
+  - eval "${MATRIX_EVAL}"
+
+env:
+  matrix:
+    - BUILD_TYPE=Debug
+    - BUILD_TYPE=Release
+
+install:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      # Download and install CMake v3.10.3.
+      mkdir -p ~/cmake-install
+      curl --silent https://cmake.org/files/v3.10/cmake-3.10.3-Linux-x86_64.sh --output cmake-install.sh
+      bash cmake-install.sh --skip-license --prefix="${HOME}/cmake"
+    elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew upgrade cmake
+    fi
+
+    export PATH=~/cmake/bin:$PATH
+
+script:
+  # Configure & Generate the project.
+  # TODO(2018-10-14 by wolters) Currently the undocumented CMake options -H and
+  # -B are used. This can be changed with the coming CMake release v3.11.
+  - cmake -G "Ninja" -DCMAKE_BUILD_TYPE:STRING="${BUILD_TYPE}" -H. -B_build
+  # Build the project.
+  - cmake --build _build
+  # Test the project.
+  - cmake --build _build --target test
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
