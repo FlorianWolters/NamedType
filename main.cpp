@@ -19,7 +19,10 @@ decltype(auto) tee(T&& value)
 }
 
 using Meter = fluent::NamedType<double, struct MeterParameter, fluent::Addable, fluent::Comparable>;
-Meter operator"" _meter(unsigned long long value) { return Meter(value); }
+Meter operator"" _meter(unsigned long long value)
+{
+    return Meter(static_cast<double>(value));
+}
 //Meter operator"" _meter(long double value) { return Meter(value); }
 
 using Width = fluent::NamedType<Meter, struct WidthParameter>;
