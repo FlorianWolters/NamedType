@@ -42,7 +42,7 @@ install:
       # Download and install CMake v3.10.3.
       CMAKE_VERSION=3.10.3
       mkdir -p ~/cmake-${CMAKE_VERSION}-x64
-      curl --silent https://cmake.org/files/v${CMAKE_VERSION::-2}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh
+      curl --silent --remote-name --remote-header-name https://cmake.org/files/v${CMAKE_VERSION::-2}/cmake-${CMAKE_VERSION}-Linux-x86_64.sh
       bash cmake-${CMAKE_VERSION}-Linux-x86_64.sh --skip-license --prefix="${HOME}/cmake-${CMAKE_VERSION}-x64"
       export PATH=~/cmake-${CMAKE_VERSION}-x64/bin:$PATH
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
