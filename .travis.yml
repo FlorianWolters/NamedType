@@ -10,25 +10,43 @@ env:
     - CMAKE_VERSION=3.10.3
     - NINJA_VERSION=1.8.2
 
-# TODO(2018-10-14 by wolters) Add support for Mac OS X and additional compiler
-# versions.
+# TODO(2018-10-14 by wolters) Add support for Mac OS X.
 matrix:
   include:
-  - name: "GCC (Travis CI default), Debug"
+  - name: "OS: linux (trusty), Compiler:gcc (default), Build Type: Debug"
     compiler: gcc
     env:
       - C_COMPILER=gcc
       - CXX_COMPILER=g++
       - BUILD_TYPE=Debug
   include:
-  - name: "GCC (Travis CI default), Release"
+  - name: "OS: linux (trusty), Compiler:gcc (default), Build Type: Release"
     compiler: gcc
     env:
       - C_COMPILER=gcc
       - CXX_COMPILER=g++
       - BUILD_TYPE=Release
   include:
-  - name: "GCC 7, Debug"
+  - name: "OS: linux (trusty), Compiler:gcc 8, Build Type: Debug"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc-8
+      - CXX_COMPILER=g++-8
+      - BUILD_TYPE=Debug
+    addons: &gcc8
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-8
+  - name: "OS: linux (trusty), Compiler:gcc 8, Build Type: Release"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc-8
+      - CXX_COMPILER=g++-8
+      - BUILD_TYPE=Release
+    addons: *gcc8
+  - name: "OS: linux (trusty), Compiler:gcc 7, Build Type: Debug"
     compiler: gcc
     env:
       - C_COMPILER=gcc-7
@@ -40,30 +58,68 @@ matrix:
           - ubuntu-toolchain-r-test
         packages:
           - g++-7
-  - name: "GCC 7, Release"
+  - name: "OS: linux (trusty), Compiler:gcc 7, Build Type: Release"
     compiler: gcc
     env:
       - C_COMPILER=gcc-7
       - CXX_COMPILER=g++-7
       - BUILD_TYPE=Release
     addons: *gcc7
-  - name: "Clang (Travis CI default), Debug"
+  - name: "OS: linux (trusty), Compiler:gcc 6, Build Type: Debug"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc-6
+      - CXX_COMPILER=g++-6
+      - BUILD_TYPE=Debug
+    addons: &gcc6
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-6
+  - name: "OS: linux (trusty), Compiler:gcc 6, Build Type: Release"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc-6
+      - CXX_COMPILER=g++-6
+      - BUILD_TYPE=Release
+    addons: *gcc6
+  - name: "OS: linux (trusty), Compiler:gcc 5, Build Type: Debug"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc-5
+      - CXX_COMPILER=g++-5
+      - BUILD_TYPE=Debug
+    addons: &gcc5
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+        packages:
+          - g++-5
+  - name: "OS: linux (trusty), Compiler:gcc 5, Build Type: Release"
+    compiler: gcc
+    env:
+      - C_COMPILER=gcc-5
+      - CXX_COMPILER=g++-5
+      - BUILD_TYPE=Release
+    addons: *gcc5
+  - name: "OS: linux (trusty), Compiler:clang (default), Build Type: Debug"
     compiler: clang
     env:
       - C_COMPILER=clang
       - CXX_COMPILER=clang++
       - BUILD_TYPE=Debug
-  - name: "Clang (Travis CI default), Release"
+  - name: "OS: linux (trusty), Compiler:clang (default), Build Type: Release"
     compiler: clang
     env:
       - C_COMPILER=clang
       - CXX_COMPILER=clang++
       - BUILD_TYPE=Release
-  - name: "Clang 7, Debug"
+  - name: "OS: linux (trusty), Compiler:clang 7, Build Type: Debug"
     compiler: clang
     env:
-      - C_COMPILER=/usr/local/clang-7.0.0/bin/clang
-      - CXX_COMPILER=/usr/local/clang-7.0.0/bin/clang++
+      - C_COMPILER=clang-7
+      - CXX_COMPILER=clang++-7
       - BUILD_TYPE=Debug
     addons: &clang7
       apt:
@@ -72,13 +128,121 @@ matrix:
           - llvm-toolchain-trusty-7
         packages:
           - clang-7
-  - name: "Clang 7, Release"
+  - name: "OS: linux (trusty), Compiler:clang 7, Build Type: Release"
     compiler: clang
     env:
-      - C_COMPILER=/usr/local/clang-7.0.0/bin/clang
-      - CXX_COMPILER=/usr/local/clang-7.0.0/bin/clang++
+      - C_COMPILER=clang-7
+      - CXX_COMPILER=clang++-7
       - BUILD_TYPE=Release
     addons: *clang7
+  - name: "OS: linux (trusty), Compiler:clang 6, Build Type: Debug"
+    compiler: clang
+    env:
+      - C_COMPILER=clang-6.0
+      - CXX_COMPILER=clang++-6.0
+      - BUILD_TYPE=Debug
+    addons: &clang6
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-trusty-6.0
+        packages:
+          - clang-6.0
+  - name: "OS: linux (trusty), Compiler:clang 6, Build Type: Release"
+    compiler: clang
+    env:
+      - C_COMPILER=clang-6.0
+      - CXX_COMPILER=clang++-6.0
+      - BUILD_TYPE=Release
+    addons: *clang6
+  - name: "OS: linux (trusty), Compiler:clang 5, Build Type: Debug"
+    compiler: clang
+    env:
+      - C_COMPILER=clang-5.0
+      - CXX_COMPILER=clang++-5.0
+      - BUILD_TYPE=Debug
+    addons: &clang5
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-trusty-5.0
+        packages:
+          - clang-5.0
+  - name: "OS: linux (trusty), Compiler:clang 4, Build Type: Release"
+    compiler: clang
+    env:
+      - C_COMPILER=clang-4.0
+      - CXX_COMPILER=clang++-4.0
+      - BUILD_TYPE=Release
+    addons: *clang4
+  - name: "OS: linux (trusty), Compiler:clang 4, Build Type: Debug"
+    compiler: clang
+    env:
+      - C_COMPILER=clang-4.0
+      - CXX_COMPILER=clang++-4.0
+      - BUILD_TYPE=Debug
+    addons: &clang4
+      apt:
+        sources:
+          - ubuntu-toolchain-r-test
+          - llvm-toolchain-trusty-4.0
+        packages:
+          - clang-4.0
+  - name: "OS: linux (trusty), Compiler:clang 4, Build Type: Release"
+    compiler: clang
+    env:
+      - C_COMPILER=clang-4.0
+      - CXX_COMPILER=clang++-4.0
+      - BUILD_TYPE=Release
+    addons: *clang4
+  - name: "OS: xcode10, Compiler: clang (default), Build Type: Debug"
+    os: osx
+    osx_image: xcode10
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Debug
+  - name: "OS: xcode10, Compiler: clang (default), Build Type: Release"
+    os: osx
+    osx_image: xcode10
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Release
+  - name: "OS: xcode9, Compiler: clang (default), Build Type: Debug"
+    os: osx
+    osx_image: xcode9
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Debug
+  - name: "OS: xcode9, Compiler: clang (default), Build Type: Release"
+    os: osx
+    osx_image: xcode9
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Release
+  - name: "OS: xcode8, Compiler: clang (default), Build Type: Debug"
+    os: osx
+    osx_image: xcode8
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Debug
+  - name: "OS: xcode8, Compiler: clang (default), Build Type: Release"
+    os: osx
+    osx_image: xcode8
+    compiler: clang
+    env:
+      - C_COMPILER=clang
+      - CXX_COMPILER=clang++
+      - BUILD_TYPE=Release
 
 install:
   - |
