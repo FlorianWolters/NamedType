@@ -168,13 +168,13 @@ matrix:
           - llvm-toolchain-trusty-5.0
         packages:
           - clang-5.0
-  - name: "OS: linux (trusty), Compiler:clang 4, Build Type: Release"
+  - name: "OS: linux (trusty), Compiler:clang 5, Build Type: Release"
     compiler: clang
     env:
-      - C_COMPILER=clang-4.0
-      - CXX_COMPILER=clang++-4.0
+      - C_COMPILER=clang-5.0
+      - CXX_COMPILER=clang++-5.0
       - BUILD_TYPE=Release
-    addons: *clang4
+    addons: *clang5
   - name: "OS: linux (trusty), Compiler:clang 4, Build Type: Debug"
     compiler: clang
     env:
@@ -257,6 +257,7 @@ install:
       unzip ninja-linux.zip -d ~/ninja-${NINJA_VERSION}
     elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew upgrade cmake
+      brew install ninja
     fi
 
 before_script:
