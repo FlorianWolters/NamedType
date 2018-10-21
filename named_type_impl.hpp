@@ -1,7 +1,9 @@
 #ifndef named_type_impl_h
 #define named_type_impl_h
 
+// Standard Library
 #include <type_traits>
+#include <utility>
 
 // Enable empty base class optimization with multiple inheritance on Visual Studio.
 #if defined(_MSC_VER) && _MSC_VER >= 1910
