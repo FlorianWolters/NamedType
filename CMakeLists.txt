@@ -25,13 +25,17 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 source_group("Header Files" FILES ${header_source_files})
 
 add_library(${PROJECT_NAME} INTERFACE)
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_constexpr)
+target_compile_features(${PROJECT_NAME}
+  INTERFACE
+    cxx_auto_type
+    cxx_constexpr
+    cxx_decltype_auto
+  )
 target_include_directories(${PROJECT_NAME} INTERFACE ${PROJECT_SOURCE_DIR})
 target_sources(${PROJECT_NAME}
   INTERFACE
   $<BUILD_INTERFACE:${header_source_files}>
   )
-
 
 # HACK: There is currently no other possibility to support IntelliSense in
 # some IDEs (e.g. Visual Studio Code) for INTERFACE (header-only) libraries.
