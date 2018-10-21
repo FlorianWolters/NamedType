@@ -37,9 +37,6 @@ target_sources(${PROJECT_NAME}
   $<BUILD_INTERFACE:${header_source_files}>
   )
 
-add_executable(usage_example usage_example.cpp)
-target_link_libraries(usage_example PRIVATE ${PROJECT_NAME})
-
 # HACK: There is currently no other possibility to support IntelliSense in
 # some IDEs (e.g. Visual Studio Code) for INTERFACE (header-only) libraries.
 add_custom_target(${PROJECT_NAME}_ide SOURCES ${header_source_files})
